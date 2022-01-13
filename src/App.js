@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Confetti from "react-confetti"
 import Die from "./Die"
 import {nanoid} from "nanoid"
@@ -6,6 +6,18 @@ import {nanoid} from "nanoid"
 function App() {
 
     const [dice, setDice] = useState(allNewDice())
+
+    const [tenzies, setTenzies] = useState(false)
+
+    useEffect(() => {
+      const allHeld = dice.every(die => die.isHeld)
+      const firstValue = dice[0].value
+      const allSameValue = dice.every(die => die.value === firstValue)
+      if(allHeld && allSameValue) {
+        setTenzies(true)
+        console.log("You won!")
+      }
+    }, [dice])
 
     function generateNewDie() {
       return {
